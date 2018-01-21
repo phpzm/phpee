@@ -1,0 +1,20 @@
+{
+  "name": "phpzm/phpee",
+  "description": "Library with same handlers to make php easier",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "William Correa",
+      "email": "wilcorrea@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Php\\": "src/"
+    },
+    "files": [
+      "bootstrap/index.php"
+    ]
+  }
+}
