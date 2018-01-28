@@ -17,11 +17,11 @@ abstract class File extends Proxy
     protected static $map = [
         /** @link http://php.net/manual/en/function.file-put-contents.php */
         'write' => [
-            'name' => 'file_put_contens',
+            'name' => 'file_put_contents',
         ],
         /** @link http://php.net/manual/en/function.file-get-contents.php */
         'read' => [
-            'name' => 'file_get_contens',
+            'name' => 'file_get_contents',
         ],
         /** @link http://php.net/manual/en/function.file-exists.php */
         'exists' => [
