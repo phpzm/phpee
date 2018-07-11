@@ -18,9 +18,9 @@ abstract class Url
     public static function host()
     {
         $self = static::self();
-        $uri = static::uri();
+        $query = static::query();
         $start = '';
-        if ($self !== $uri) {
+        if ($self !== $query) {
             $start = static::start($self);
         }
         return server('HTTP_HOST') . $start;
@@ -29,16 +29,16 @@ abstract class Url
     /**
      * @return string
      */
-    public static function path()
+    public static function current()
     {
         $self = static::self();
-        $uri = static::uri();
-        if ($self !== $uri) {
+        $query = static::query();
+        if ($self !== $query) {
             $start = static::start($self);
             $search = '/' . preg_quote($start, '/') . '/';
-            $uri = preg_replace($search, '', $uri, 1);
+            $query = preg_replace($search, '', $query, 1);
         }
-        return $uri;
+        return $query;
     }
 
     /**
@@ -52,9 +52,9 @@ abstract class Url
     /**
      * @return string
      */
-    private static function uri()
+    private static function query()
     {
-        return server('REQUEST_URI') ? explode('?', server('REQUEST_URI'))[0] : '';
+        return server('QUERY_STRING') ? server('QUERY_STRING') : '';
     }
 
     /**
