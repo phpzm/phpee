@@ -56,103 +56,103 @@ Um exmplo, ao invés de usar `file_put_contents()` podemos usar `Php\File::write
 
 ### Text
  - #### **int length(string $string)<br>**
-   alias: https://php.net/strlen
+   alias: https://php.net/strlen<br>
    ex.: Php\Text::length(_string_);
    
  - #### **string replace(string $string, string $search, string $replace)<br>**
-   alias: https://php.net/str_replace
+   alias: https://php.net/str_replace<br>
    ex.: Php\Text::replace(_string_, _string_, _string_);
    
  - #### **mixed first(string $string, string $search)<br>**
-   alias: https://php.net/strpos
+   alias: https://php.net/strpos<br>
    ex.: Php\Text::first(_string_, _string_);
    
  - #### **mixed last(string $string, string $search)<br>**
-   alias: https://php.net/strrchr
+   alias: https://php.net/strrchr<br>
    ex.: Php\Text::last(_string_, _string_);
    
  - #### **string upper(string $string)<br>**
-   alias: https://php.net/strtoupper
+   alias: https://php.net/strtoupper<br>
    ex.: Php\Text::upper(_string_);
    
  - #### **string lower(string $string)<br>**
-   alias: https://php.net/strtolower
+   alias: https://php.net/strtolower<br>
    ex.: Php\Text::lower(_string_);
    
  - #### **string capitalize(string $string)<br>**
-   alias: https://php.net/ucwords
+   alias: https://php.net/ucwords<br>
    ex.: Php\Text::capitalize(_string_);
    
  - #### **string unCapitalize(string $string)<br>**
-   alias: https://php.net/lcfirst
+   alias: https://php.net/lcfirst<br>
    ex.: Php\Text::unCapitalize(_string_);
    
  - #### **array split(string $delimiter, string $string, int $limit = null)<br>**
-   alias: https://php.net/explode
+   alias: https://php.net/explode<br>
    ex.: Php\Text::split(_string_, _string_, _int_);
    
  - #### **string join(string $glue, array $pieces)<br>**
-   alias: https://php.net/implode
+   alias: https://php.net/implode<br>
    ex.: Php\Text::join(_string_, _array_);
    
  - #### **string levenshtein(string $a, string $b)<br>**
-   alias: https://php.net/levenshtein
+   alias: https://php.net/levenshtein<br>
    ex.: Php\Text::levenshtein(_string_, _string_);
    
  - #### **string substring(string $string , int $start, int $length = null)<br>**
-   alias: https://php.net/substr
+   alias: https://php.net/substr<br>
    ex.: Php\Text::substring(_string_, _int_, _int_);
    
  - #### **string trim(string $string , string $characters = null)<br>**
-   alias: https://php.net/trim
+   alias: https://php.net/trim<br>
    ex.: Php\Text::trim(_string_, _string_);
    
  - #### **string wrap(string $string , int $width = 75, string $break = "\n", bool $cut = false)<br>**
-   alias: https://php.net/wordwrap
+   alias: https://php.net/wordwrap<br>
    ex.: Php\Text::wrap(_string_, _int_, _string_, _bool_);
    
  - #### **int compare(string $a, string $b)<br>**
-   alias: https://php.net/strcmp
+   alias: https://php.net/strcmp<br>
    ex.: Php\Text::compare(_string_, _string_);
    
  - #### **array divide(string $string, int $length = 1)<br>**
-   alias: https://php.net/str_split
+   alias: https://php.net/str_split<br>
    ex.: Php\Text::divide(_string_, _int_);
    
  - #### **string shuffle(string $string)<br>**
-   alias: https://php.net/str_shuffle
+   alias: https://php.net/str_shuffle<br>
    ex.: Php\Text::shuffle(_string_);
    
  - #### **string repeat(string $string, int $multiplier)<br>**
-   alias: https://php.net/str_repeat
+   alias: https://php.net/str_repeat<br>
    ex.: Php\Text::repeat(_string_, _int_);
    
 ## Recursos Adicionais:
 
 ### Http
  - #### **mixed post(string $index)<br>**
+   Pega um valor do $_POST<br>
    ex.: Php\Http::post(_string_)
-   Pega um valor do $_POST
    
  - #### **mixed get(string $index)<br>**
-   Pega um valor do $_GET
+   Pega um valor do $_GET<br>
    ex.: Php\Http::post(_string_)
    
  - #### **mixed file(string $index)<br>**
-   Pega um valor do $_FILES
+   Pega um valor do $_FILES<br>
    ex.: Php\Http::post(_string_)
    
  - #### **mixed all($index = null)<br>**
-   Pega um valor do $_REQUEST
+   Pega um valor do $_REQUEST<br>
    ex.: Php\Http::all(_string_)
 
 ### Url
  - #### **string host()<br>**
-   Pega o nome do host da aplicação
+   Pega o nome do host da aplicação<br>
    ex.: Php\Url::host()
  
  - #### **string current()<br>**
-   Pega a URL em que a aplicação teve a requisição atual solicitada
+   Pega a URL em que a aplicação teve a requisição atual solicitada<br>
    ex.: Php\Url::current()
    
    
