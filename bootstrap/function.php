@@ -1,5 +1,7 @@
 <?php
 
+namespace Php;
+
 if (!function_exists('filter')) {
     /**
      * @param int $source
