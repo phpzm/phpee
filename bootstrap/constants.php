@@ -1,5 +1,7 @@
 <?php
 
+namespace Php;
+
 define('APP_ROOT', dirname(__DIR__, 4));
 
 // native types
