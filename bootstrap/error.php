@@ -1,5 +1,7 @@
 <?php
 
+namespace Php;
+
 if (!function_exists('error_handler')) {
     /**
      * @param $code
