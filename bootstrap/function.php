@@ -177,6 +177,10 @@ if (!function_exists('guid')) {
 
 if (!function_exists('get')) {
     /**
+     * Get a value of matrix or array using path as reference.
+     * Usage: $array = ['user' => ['address' => [['city' => 'Vila Velha']]]]
+     *        echo Php\get($array, 'user.address.0.city'); // Vila Velha
+     *
      * @param array $context
      * @param string $path
      * @param mixed $fallback (null)
@@ -184,20 +188,30 @@ if (!function_exists('get')) {
      */
     function get(array $context, string $path, $fallback = null)
     {
+        // convert the path to an array
+        // ex.: user.address.0.city
         $pieces = explode('.', $path);
-        $value = $context;
+        // let's go through the array
         foreach ($pieces as $piece) {
-            if (!isset($value[$piece])) {
+            // if a piece is broken just return fallback
+            if (!isset($context[$piece])) {
                 return $fallback;
             }
-            $value = $value[$piece];
+            // assign the context to next interaction
+            $context = $context[$piece];
         }
-        return $value;
+        // all right, the job is done!
+        return $context;
     }
 }
 
 if (!function_exists('set')) {
     /**
+     * Set a value of matrix or array using path as reference.
+     * Usage: $array = ['user' => ['address' => [['city' => 'Vila Velha']]]]
+     *        $array = Php\set($array, 'user.address.0.city', 'Fortaleza');
+     *        echo Php\get($array, 'user.address.0.city'); // Fortaleza
+     *
      * @param array|object $context
      * @param array|string $path
      * @param mixed $new null
