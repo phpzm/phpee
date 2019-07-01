@@ -2,6 +2,8 @@
 
 namespace Php;
 
+use ErrorException;
+
 if (!function_exists('filter')) {
     /**
      * @param int $source
@@ -22,26 +24,6 @@ if (!function_exists('server')) {
     function server($index)
     {
         return filter(INPUT_SERVER, $index);
-    }
-}
-
-if (!function_exists('env')) {
-    /**
-     * @param string $property
-     * @param mixed $default (null)
-     * @return string
-     */
-    function env($property, $default = null)
-    {
-        $filename = path(APP_ROOT, '.env');
-        if (!file_exists($filename) || !is_file($filename)) {
-            return $default;
-        }
-        $properties = parse_ini_file($filename);
-        if (!is_array($properties)) {
-            return $default;
-        }
-        return get($properties, $property);
     }
 }
 
@@ -75,24 +57,34 @@ if (!function_exists('parse')) {
      */
     function parse($value)
     {
-        switch (gettype($value)) {
-            case TYPE_BOOLEAN:
+        $handlers = [
+            TYPE_BOOLEAN => function ($value) {
                 return $value ? 'true' : 'false';
-                break;
-            case TYPE_INTEGER:
-            case TYPE_FLOAT:
-            case TYPE_STRING:
+            },
+            TYPE_INTEGER => function ($value) {
                 return trim($value);
-                break;
-            case TYPE_ARRAY:
-            case TYPE_OBJECT:
-            case TYPE_RESOURCE:
+            },
+            TYPE_FLOAT => function ($value) {
+                return trim($value);
+            },
+            TYPE_STRING => function ($value) {
+                return trim($value);
+            },
+            TYPE_ARRAY => function ($value) {
                 return json_encode($value);
-            // case TYPE_NULL:
-            // case TYPE_UNKNOWN_TYPE:
-            default:
-                return '';
+            },
+            TYPE_OBJECT => function ($value) {
+                return json_encode($value);
+            },
+            TYPE_RESOURCE => function ($value) {
+                return json_encode($value);
+            }
+        ];
+        $type = gettype($value);
+        if (isset($handlers[$type])) {
+            return $handlers[$type]($value);
         }
+        return '';
     }
 }
 
@@ -113,14 +105,15 @@ if (!function_exists('coalesce')) {
     }
 }
 
-if (!function_exists('get')) {
+if (!function_exists('prop')) {
     /**
      * @param mixed $value
      * @param string|int $property (null)
      * @param mixed $default (null)
+     *
      * @return mixed
      */
-    function get($value, $property = null, $default = null)
+    function prop($value, $property = null, $default = null)
     {
         if (is_null($property)) {
             return $default;
@@ -128,14 +121,11 @@ if (!function_exists('get')) {
         if (!$value) {
             return $default;
         }
-        if (is_array($value)) {
-            if (isset($value[$property])) {
-                return $value[$property];
-            }
-            return search($value, $property, $default);
+        if (is_array($value) && isset($value[$property])) {
+            return $value[$property];
         }
         /** @noinspection PhpVariableVariableInspection */
-        if ($value && is_object($value) && isset($value->$property)) {
+        if (is_object($value) && isset($value->$property)) {
             /** @noinspection PhpVariableVariableInspection */
             return $value->$property;
         }
@@ -185,54 +175,30 @@ if (!function_exists('guid')) {
     }
 }
 
-if (!function_exists('error_message')) {
+if (!function_exists('get')) {
     /**
-     * @param Throwable $error
-     * @return string
-     */
-    function error_message(Throwable $error)
-    {
-        $pieces = [];
-        $line = function ($message, $file, $line) {
-            $file = str_replace(dirname(__DIR__, 2), '', $file);
-            return $message . ' on ' . $file . ' in ' . $line;
-        };
-
-        $pieces[] = $line($error->getMessage(), $error->getFile(), $error->getLine());
-
-        if (method_exists($error, 'getDetails')) {
-            $pieces[] = '~';
-            $pieces[] = json_encode($error->getDetails(), JSON_PRETTY_PRINT);
-        }
-        if (is_array($error->getTrace())) {
-            $pieces[] = '~';
-            foreach ($error->getTrace() as $item) {
-                $class = get($item, 'class');
-                $function = get($item, 'function');
-                $pieces[] = $line("`{$class}::{$function}`", get($item, 'file'), get($item, 'line'));
-            }
-        }
-        return implode(PHP_EOL, $pieces);
-    }
-}
-
-if (!function_exists('search')) {
-    /**
-     * @param array $context
+     * @param array|object $context
      * @param array|string $path
-     * @param mixed $default (null)
+     * @param mixed $fallback (null)
      * @return mixed|null
      */
-    function search(array $context, $path, $default = null)
+    function get($context, $path, $fallback = null)
     {
         if (!is_array($path)) {
             $path = explode('.', $path);
         }
+        if (is_object($context)) {
+            $context = get_object_vars($context);
+        }
+
         foreach ($path as $piece) {
             if (!is_array($context) || !array_key_exists($piece, $context)) {
-                return $default;
+                return $fallback;
             }
             $context = $context[$piece];
+            if (is_object($context)) {
+                $context = get_object_vars($context);
+            }
         }
         return $context;
     }
