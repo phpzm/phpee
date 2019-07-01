@@ -177,28 +177,49 @@ if (!function_exists('guid')) {
 
 if (!function_exists('get')) {
     /**
-     * @param array|object $context
-     * @param array|string $path
+     * @param array $context
+     * @param string $path
      * @param mixed $fallback (null)
      * @return mixed|null
      */
-    function get($context, $path, $fallback = null)
+    function get(array $context, string $path, $fallback = null)
     {
-        if (!is_array($path)) {
-            $path = explode('.', $path);
-        }
-        if (is_object($context)) {
-            $context = get_object_vars($context);
-        }
-
-        foreach ($path as $piece) {
-            if (!is_array($context) || !array_key_exists($piece, $context)) {
+        $pieces = explode('.', $path);
+        $value = $context;
+        foreach ($pieces as $piece) {
+            if (!isset($value[$piece])) {
                 return $fallback;
             }
-            $context = $context[$piece];
-            if (is_object($context)) {
-                $context = get_object_vars($context);
+            $value = $value[$piece];
+        }
+        return $value;
+    }
+}
+
+if (!function_exists('set')) {
+    /**
+     * @param array|object $context
+     * @param array|string $path
+     * @param mixed $new null
+     * @return mixed|null
+     */
+    function set(array $context, string $path, $new)
+    {
+        $path = explode('.', $path);
+        $value = null;
+        $property = array_pop($path);
+        foreach ($path as $piece) {
+            if (!$value) {
+                $value = &$context[$piece];
+                continue;
             }
+            if (!isset($value[$piece])) {
+                $value[$piece] = [];
+            }
+            $value = &$value[$piece];
+        }
+        if (isset($value[$property])) {
+            $value[$property] = $new;
         }
         return $context;
     }
