@@ -1,6 +1,6 @@
 {
   "name": "phpzm/phpee",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Library with same handlers to make php easier",
   "type": "library",
   "license": "MIT",
